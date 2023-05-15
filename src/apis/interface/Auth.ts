@@ -45,3 +45,19 @@ export interface RegisterEnroll {
   startWork: string
   teamName: string
 }
+
+export interface LoginResponseData {
+  data?:
+    | {
+        id: number
+        name: string
+        email: string
+        phoneNumber: string
+        profileImage: string
+        startWork: string
+        teamName: string
+        role: string
+        remain: number
+      }
+    | undefined
+}

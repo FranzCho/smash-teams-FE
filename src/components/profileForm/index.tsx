@@ -28,6 +28,8 @@ function ProfileForm() {
 
   // 수정하기 버튼 onSubmit
 
+  // 회원탈퇴 
+
   // 날짜 포맷 변경 함수
   function formatDate(inputDate: string) {
     const date = new Date(inputDate)

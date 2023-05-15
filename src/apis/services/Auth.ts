@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { axiosInstance } from '../axios'
-import { EmailCheckRequest, LoginRequest, RegisterEnroll, RegisterRequest, User, UserPayload } from '../interface/Auth'
+import { EmailCheckRequest, LoginRequest, LoginResponseData, RegisterEnroll, RegisterRequest, User, UserPayload } from '../interface/Auth'
 import { setCookie } from '../../utils/cookies'
 
 export const login = async (user: LoginRequest) => {
@@ -50,7 +50,7 @@ export const getUsers = async () => {
   return data
 }
 
-export const getUser = async (userId: number) => {
-  const { data } = await axiosInstance().get<User[]>(`/users/${userId}`)
+export const getUser = async () => {
+  const { data } = await axiosInstance().get<LoginResponseData>('/auth/user/')
   return data
 }
