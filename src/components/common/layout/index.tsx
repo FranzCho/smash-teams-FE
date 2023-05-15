@@ -11,7 +11,7 @@ function Layout() {
       <ContensWrapper>
         <SideBar>
           <Navbar />
-          <ProfileBar></ProfileBar>
+          <ProfileBar />
         </SideBar>
         <Outlet />
       </ContensWrapper>

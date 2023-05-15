@@ -3,19 +3,27 @@ import * as S from './style'
 import { useMutation } from 'react-query'
 import { login } from '../../apis/services/Auth'
 import LoginForm from '../../components/loginForm'
-import { Axios, AxiosError } from 'axios'
-import { setCookie } from '../../utils/cookies'
+import { AxiosError } from 'axios'
+import { LoginRequest, LoginResponseData } from '../../apis/interface/Auth'
+import Swal from 'sweetalert2'
+import { theme } from '../../../src/styles/Theme'
 
 // 로그인 페이지
 function LoginPage() {
   const navigate = useNavigate()
-  const { mutate } = useMutation(login, {
+
+  const { mutate } = useMutation<LoginResponseData, AxiosError, LoginRequest>(login, {
     onSuccess: (data) => {
-      console.log('success')
       navigate('/')
     },
-    onError: (err: AxiosError) => {
-      alert('login fail')
+    onError: () => {
+      Swal.fire({
+        icon: 'error',
+        title: '로그인에 실패했습니다.',
+        text: '아이디와 비밀번호를 확인해주세요.',
+        confirmButtonText: '확인',
+        confirmButtonColor: theme.colors.blue,
+      })
     },
   })
 
@@ -32,6 +40,7 @@ function LoginPage() {
             </S.Body>
           </S.LoginTextWrapper>
           <S.LoginImage src="/login.jpg" />
+          <S.LoginCharacter src="/monster.gif" />
         </S.LoginSourseWrapper>
       </S.LoginPageWrapper>
       <S.BackGround></S.BackGround>

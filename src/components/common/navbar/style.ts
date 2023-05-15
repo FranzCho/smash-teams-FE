@@ -5,7 +5,7 @@ export const NavbarWrapper = styled.nav`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 280px;
   padding: 30px;
   height: 300px;

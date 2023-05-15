@@ -11,7 +11,7 @@ export const BackGround = styled.div`
   width: 100vw;
   min-width: 1440px;
   height: 50vh;
-  background-color: #aa2727;
+  background-color: ${theme.colors.red};
   border-top-right-radius: 50vh;
   position: absolute;
   bottom: 0;
@@ -25,6 +25,14 @@ export const LoginImage = styled.img`
   top: -311px;
   left: 30px;
 `
+
+export const LoginCharacter = styled.img`
+  width: 100px;
+  position: absolute;
+  top: -82px;
+  left: 480px;
+`
+
 export const LoginSourseWrapper = styled.div`
   width: 1440px;
   height: 50vh;
@@ -41,7 +49,7 @@ export const LoginTextWrapper = styled.div`
 
 export const Title = styled.div`
   color: ${theme.colors.white};
-  font-size: 70px;
+  font-size: 80px;
   font-weight: 600;
 `
 export const Body = styled.div`

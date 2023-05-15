@@ -43,6 +43,7 @@
 export const theme = {
   colors: {
     mainColor: '#AA2727',
+    mainColorGray: '#912121',
 
     white: '#FFFFFF',
 
@@ -52,6 +53,7 @@ export const theme = {
     blackCompleteList: '#2C2C2C',
 
     red: '#952A2A',
+    redGray: '#772222',
     redSideMenu: '#F7CCCC',
 
     redTodayButton: '#E15E5E',

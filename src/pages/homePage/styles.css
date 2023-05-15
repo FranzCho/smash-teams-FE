@@ -55,10 +55,10 @@ span.toastui-calendar-weekday-event-dot {
 .toastui-calendar-template-milestone {
   margin-top: 2px;
   line-height: 19px;
-  width: 140px;
+  width: 100%;
   padding-left: 2px;
-  padding-top: 1px;
-  margin-left: -3.7px;
+  padding-top: 0.5px;
+  margin-left: -3px;
   background-color: #fff;
   border-radius: 4px;
 }

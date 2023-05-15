@@ -6,7 +6,6 @@ export const TopWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
   border-radius: 14px;
   margin-bottom: 14px;
 `

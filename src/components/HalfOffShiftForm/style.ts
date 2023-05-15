@@ -60,3 +60,21 @@ export const CompleteListWrapper = styled.div`
   padding: 24px 40px;
   overflow: scroll;
 `
+
+export const EmptyListWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
+export const EmptyImage = styled.img`
+  width: 50%;
+`
+export const EmptyText = styled.div`
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 20px;
+`

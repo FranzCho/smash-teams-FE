@@ -99,6 +99,9 @@ export const AcceptButton = styled.div<ToggleButtonProps>`
   border-radius: 4px;
   cursor: pointer;
   font-weight: 700;
+  &:hover {
+    background-color: ${theme.colors.blue};
+  }
 `
 export const RejectButton = styled.div<ToggleButtonProps>`
   width: 134px;
@@ -120,6 +123,10 @@ export const RejectButton = styled.div<ToggleButtonProps>`
   border-radius: 4px;
   cursor: pointer;
   font-weight: 700;
+
+  &:hover {
+    background-color: ${theme.colors.red};
+  }
 `
 
 export const CurrentStatusButton = styled.div<ButtonStatusProps>`

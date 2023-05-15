@@ -3,43 +3,64 @@ import { FaRegCalendarCheck } from 'react-icons/fa'
 import { CgNotes } from 'react-icons/cg'
 import { BsPencilSquare } from 'react-icons/bs'
 import { GoChecklist } from 'react-icons/go'
-import { NavbarLink, NavbarLinkText, NavbarWrapper } from './style'
+import { BsFillFilePersonFill } from 'react-icons/bs'
+import * as S from './style'
+import { useState } from 'react'
+import { useQuery, useQueryClient } from 'react-query'
+import { LoginResponseData } from '../../../apis/interface/Auth'
+import { AxiosError } from 'axios'
+import { getUser } from '../../../apis/services/Auth'
 
 function Navbar() {
+  const { data: myUser } = useQuery<LoginResponseData, AxiosError>('myUser', getUser)
+
   return (
-    <NavbarWrapper>
-      <NavbarLink to="/">
-        <NavbarLinkText>
-          <FaRegCalendarCheck />
-          전체 일정보기
-        </NavbarLinkText>
-      </NavbarLink>
-      <NavbarLink to="/dayoff">
-        <NavbarLinkText>
-          <BsPencilSquare />
-          연차 신청하기
-        </NavbarLinkText>
-      </NavbarLink>
-      <NavbarLink to="/nightsheet">
-        <NavbarLinkText>
-          {' '}
-          <BiTimeFive />
-          당직 신청하기
-        </NavbarLinkText>
-      </NavbarLink>
-      <NavbarLink to="/history">
-        <NavbarLinkText>
-          <CgNotes />
-          연차 / 당직 내역보기
-        </NavbarLinkText>
-      </NavbarLink>
-      <NavbarLink to="/manage">
-        <NavbarLinkText>
-          <GoChecklist />
-          연차 / 당직 관리하기
-        </NavbarLinkText>
-      </NavbarLink>
-    </NavbarWrapper>
+    <S.NavbarWrapper>
+      {myUser?.data?.role === 'ADMIN' ? (
+        <S.NavbarLink to="/admin">
+          <S.NavbarLinkText>
+            <BsFillFilePersonFill />
+            유저 권한 설정하기
+          </S.NavbarLinkText>
+        </S.NavbarLink>
+      ) : (
+        <>
+          <S.NavbarLink to="/">
+            <S.NavbarLinkText>
+              <FaRegCalendarCheck />
+              전체 일정보기
+            </S.NavbarLinkText>
+          </S.NavbarLink>
+          <S.NavbarLink to="/dayoff">
+            <S.NavbarLinkText>
+              <BsPencilSquare />
+              연차 신청하기
+            </S.NavbarLinkText>
+          </S.NavbarLink>
+          <S.NavbarLink to="/nightsheet">
+            <S.NavbarLinkText>
+              {' '}
+              <BiTimeFive />
+              당직 신청하기
+            </S.NavbarLinkText>
+          </S.NavbarLink>
+          <S.NavbarLink to="/history">
+            <S.NavbarLinkText>
+              <CgNotes />
+              연차 / 당직 내역보기
+            </S.NavbarLinkText>
+          </S.NavbarLink>
+          {myUser?.data?.role === 'USER' ? null : (
+            <S.NavbarLink to="/manage">
+              <S.NavbarLinkText>
+                <GoChecklist />
+                연차 / 당직 관리하기
+              </S.NavbarLinkText>
+            </S.NavbarLink>
+          )}
+        </>
+      )}
+    </S.NavbarWrapper>
   )
 }
 

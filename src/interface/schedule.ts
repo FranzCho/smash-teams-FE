@@ -42,3 +42,17 @@ export interface User {
   teamName: string
   profileImage: string
 }
+
+export interface ScheduleEnroll {
+  type: string
+  startDate: string
+  endDate: string
+  reason: string
+}
+
+export interface ScheduleEnrollResponse {
+  type: string
+  startDate: string
+  endDate: string
+  reason: string
+}

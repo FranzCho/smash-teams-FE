@@ -1,4 +1,4 @@
-export interface HomeProps {
+export interface CalendarProps {
   id: string
   calendarId: string
   title: string

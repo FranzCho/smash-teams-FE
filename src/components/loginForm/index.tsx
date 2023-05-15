@@ -1,22 +1,17 @@
-import React, { useState } from 'react'
 import * as S from './style'
 import { UseMutateFunction } from 'react-query'
 import { useForm } from 'react-hook-form'
-import { AuthResponse, LoginRequest } from '../../apis/interface/Auth'
+import { LoginRequest } from '../../apis/interface/Auth'
 import { AxiosError } from 'axios'
 import { useNavigate } from 'react-router-dom'
 
-interface LoginFormProps {
-  mutate: UseMutateFunction<AuthResponse, AxiosError, LoginRequest>
-}
-
-function LoginForm({ mutate }: LoginFormProps) {
+function LoginForm({ mutate }: { mutate: UseMutateFunction<unknown, AxiosError, LoginRequest> }) {
   const navigate = useNavigate()
 
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, isDirty, errors },
+    formState: { isDirty, errors, isValid },
   } = useForm<LoginRequest>()
 
   const onSubmit = (data: LoginRequest) => {
@@ -31,7 +26,9 @@ function LoginForm({ mutate }: LoginFormProps) {
     <>
       <S.LoginContainer>
         <S.LoginWrraper>
-          <S.LoginLogo src="/title-logo.png" />
+          <S.LogoWrapper>
+            <S.LoginLogo src="/title-logo.png" />
+          </S.LogoWrapper>
           <S.LoginFormContainer onSubmit={handleSubmit(onSubmit)}>
             <S.LoginInput
               id="email"
@@ -46,8 +43,7 @@ function LoginForm({ mutate }: LoginFormProps) {
                 },
               })}
             />
-            {errors.email && <div role="alert">{errors.email.message}</div>}
-
+            {errors.email ? <S.Alert role="alert">{errors.email.message}</S.Alert> : <S.Alert role="alert"></S.Alert>}
             <S.LoginInput
               id="password"
               type="password"
@@ -61,8 +57,14 @@ function LoginForm({ mutate }: LoginFormProps) {
                 },
               })}
             />
-            {errors.password && <div role="alert">{errors.password.message}</div>}
-            <S.LoginButton type="submit">로그인</S.LoginButton>
+            {errors.password ? (
+              <S.Alert role="alert">{errors.password.message}</S.Alert>
+            ) : (
+              <S.Alert role="alert"></S.Alert>
+            )}
+            <S.LoginButton type="submit" isValid={!isValid}>
+              로그인
+            </S.LoginButton>
             <S.RegisterButton onClick={navigateToSignUp}>회원가입</S.RegisterButton>
           </S.LoginFormContainer>
         </S.LoginWrraper>

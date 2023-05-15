@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 export const DropDownWrapper = styled.div<{ width: string }>`
+  margin: 10px 0;
   position: relative;
   width: ${({ width }) => width};
   height: 20px;

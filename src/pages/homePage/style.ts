@@ -1,123 +1,114 @@
 import ToastUIReactCalendar from '@toast-ui/react-calendar/*'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import type { Options } from '@toast-ui/calendar'
 
 import '@toast-ui/calendar/toastui-calendar.css'
 import 'tui-date-picker/dist/tui-date-picker.min.css'
 import 'tui-time-picker/dist/tui-time-picker.min.css'
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0
+  }
+  to {
+    opacity: 1
+  }
+`
+
 export const HomeWrapper = styled.div`
-  width: 1137px;
-  margin-left: 3px;
+  width: 1140px;
   display: flex;
+  padding: 20px;
   flex-direction: column;
 `
 
 export const TopBar = styled.div`
   width: 1137px;
-  height: 40px;
+  height: 60px;
   z-index: 9;
   position: absolute;
   display: flex;
-  align-items: center;
   h2 {
     font-weight: 700;
     font-size: 28px;
+    width: 134px;
     margin: 14px 0 0 14px;
   }
   .info {
     width: 20px;
     height: 20px;
-    margin-left: 5px;
-    transform: translateY(9px);
+    margin: 0 10px 0 0;
+    transform: translateY(13px);
   }
-`
-
-export const ContorlBar = styled.div`
-  width: 1127px;
-  margin-top: 40px;
-  height: auto;
-  display: flex;
-  flex-direction: row;
-  margin-left: 14px;
-
+  .excelDownloadButton {
+    font-weight: 700;
+    font-size: 13px;
+    background-color: #17842f;
+    margin: 10px 0 0 560px;
+    border-radius: 8px;
+    width: 70px;
+    height: 30px;
+    color: ${({ theme }) => theme.colors.white};
+    svg {
+      transform: translateY(2px);
+    }
+  }
+  /* month, today btn */
   span {
-    position: absolute;
-    right: 5px;
   }
-
   .btn {
     border-radius: 25px;
   }
-
-  .btn:hover {
-    border: solid 2px #bbb;
-  }
-
-  .btn:active {
-    border: solid 2px #bbb;
-    outline: none;
-  }
-
-  .btn:disabled {
-    border: solid 2px #ddd;
-    color: #bbb;
-  }
-
-  .render-range {
-    padding-left: 12px;
-    font-size: 19px;
-    vertical-align: middle;
-  }
-
-  /* 오늘로 이동하는 btn */
   .move-today {
-    background-color: #e15e5e;
+    &:hover {
+      background-color: ${({ theme }) => theme.colors.redGray};
+    }
+    margin-left: 20px;
+    background-color: ${({ theme }) => theme.colors.red};
     border-radius: 8px;
     border: none;
     width: 70px;
     height: 30px;
-    color: #fff;
+    color: ${({ theme }) => theme.colors.white};
     font-style: normal;
     font-weight: 600;
     font-size: 13px;
   }
-
-  /* 다음달, 이전달로 이동하는 btn */
   .move-day {
     margin-top: 10px;
-    background: #aa2727;
+    &:hover {
+      background-color: ${({ theme }) => theme.colors.mainColorGray};
+    }
+    background-color: ${({ theme }) => theme.colors.mainColor};
     font-weight: 600;
     font-size: 13px;
     width: 30px;
     height: 30px;
     border-radius: 0%;
-    color: #fff;
+    color: ${({ theme }) => theme.colors.white};
+    &-prev {
+      margin-left: 9px;
+      border-bottom-left-radius: 8px;
+      border-top-left-radius: 8px;
+    }
+    &-next {
+      border-bottom-right-radius: 8px;
+      border-top-right-radius: 8px;
+    }
   }
 
-  .move-day-prev {
-    margin-left: 9px;
-    border-bottom-left-radius: 8px;
-    border-top-left-radius: 8px;
-  }
-
-  .move-day-next {
-    border-bottom-right-radius: 8px;
-    border-top-right-radius: 8px;
-    margin-right: -5px;
-    margin-right: 15px;
-  }
-
+  /* dropdown */
   .dropdown {
     margin-right: 10px;
   }
 `
 export const Info = styled.div`
+  animation: ${fadeIn} 0.5s ease-out;
   position: relative;
   top: 60px;
   left: -18px;
   z-index: 9;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.white};
   width: 100px;
   height: 80px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -138,7 +129,7 @@ export const Info = styled.div`
   .info-dayoff {
     border-radius: 4px;
     background-color: ${({ theme }) => theme.colors.red};
-    color: #fff;
+    color: ${({ theme }) => theme.colors.white};
     img {
       margin: 0 3px 0 4px;
     }
@@ -157,6 +148,12 @@ export const Info = styled.div`
     }
   }
 `
+
+export const calendarWrapper = styled.div`
+  margin-top: 60px;
+  margin-left: 10px;
+`
+
 export const theme: Options['theme'] = {
   common: {
     border: '1px solid #ddd',
@@ -182,7 +179,3 @@ export const theme: Options['theme'] = {
     moreViewTitle: { backgroundColor: '#f4f4f4' },
   },
 }
-export const calendarWrapper = styled.div`
-  margin-top: 20px;
-  margin-left: 10px;
-`

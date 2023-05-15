@@ -1,5 +1,21 @@
-import { TeamName } from './../../components/HistoryCard/style'
+import { TeamName } from '../../components/historyCard/style'
 import { CgPassword } from 'react-icons/cg'
+
+export interface LoginResponseData {
+  data?:
+    | {
+        id: number
+        name: string
+        email: string
+        phoneNumber: string
+        profileImage: string
+        startWork: string
+        teamName: string
+        role: string
+        remain: number
+      }
+    | undefined
+}
 
 export interface LoginRequest {
   email: string
@@ -18,10 +34,6 @@ export interface UserPayload {
   id: number
   email: string
   username: string
-}
-
-export interface LogoutRequest {
-  refreshToken: string
 }
 
 export interface User {
@@ -46,6 +58,7 @@ export interface RegisterEnroll {
   teamName: string
 }
 
+<<<<<<< HEAD
 export interface LoginResponseData {
   data?:
     | {
@@ -60,4 +73,10 @@ export interface LoginResponseData {
         remain: number
       }
     | undefined
+=======
+export interface Admin {
+  teamName: string
+  keyword: string
+  page: number
+>>>>>>> 1435c1b61d5ef30d98ce4c46da11e2e0b8449ec7
 }

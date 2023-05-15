@@ -6,12 +6,17 @@ import SwiperList from '../common/SwiperList'
 import ListToggleTopWrapper from '../TopWrapper'
 import CompleteItem from '../common/completeItem'
 import { useLocation } from 'react-router-dom'
+import { useQuery } from 'react-query'
+import { LoginResponseData } from '../../apis/interface/Auth'
+import { AxiosError } from 'axios'
+import { getUser } from '../../apis/services/Auth'
+import { c } from 'msw/lib/glossary-de6278a9'
 
 function HalfOffShiftForm(scheduleData: { scheduleData: MyScheduleData[] | undefined }) {
   const [isRequestList, setIsRequestList] = useState(true) // 승인 목록
   const [isCompletedList, setIsCompletedList] = useState(false) // 거절 목록
 
-  const isManage = useLocation().pathname.includes('manage')
+  const isManager = useLocation().pathname.includes('manage')
 
   const userItems = ['연차', '반차'] // 드롭다운 아이템
   const manageItems = ['연차', '반차', '당직'] // 드롭다운 아이템
@@ -71,10 +76,10 @@ function HalfOffShiftForm(scheduleData: { scheduleData: MyScheduleData[] | undef
 
   switch (selectedItem) {
     case '연차':
-      halfOffData = isRequestList ? RequestDayOffList : CompletedDayOffList
+      halfOffData = isRequestList ? RequestHalfOffList : CompletedHalfOffList
       break
     case '반차':
-      halfOffData = isRequestList ? RequestHalfOffList : CompletedHalfOffList
+      halfOffData = isRequestList ? RequestDayOffList : CompletedDayOffList
       break
     case '당직':
       halfOffData = CompletedShiftList
@@ -82,13 +87,13 @@ function HalfOffShiftForm(scheduleData: { scheduleData: MyScheduleData[] | undef
     default:
       halfOffData = CompletedShiftList
   }
-
   // 조건부 당직 신청중, 완료된 목록 리스트
   const dayOffData = isRequestList ? RequestShiftList : CompletedShiftList
+  console.log('현재 콘솔 확인', halfOffData)
   return (
     <>
       <S.DayOffList>
-        {isManage && isCompletedList ? (
+        {isManager && isCompletedList ? (
           <ListToggleTopWrapper
             items={manageItems}
             selectedItem={selectedItem}
@@ -108,15 +113,19 @@ function HalfOffShiftForm(scheduleData: { scheduleData: MyScheduleData[] | undef
           ></ListToggleTopWrapper>
         )}
       </S.DayOffList>
-      {isManage && isCompletedList ? (
-        <>
-          <S.CompleteListWrapper>
-            {halfOffData &&
-              halfOffData.map((item) => {
-                return <CompleteItem key={item.scheduleId} schedule={item}></CompleteItem>
-              })}
-          </S.CompleteListWrapper>
-        </>
+      {isManager && isCompletedList ? (
+        <S.CompleteListWrapper>
+          {halfOffData && halfOffData.length > 0 ? (
+            halfOffData.map((item) => {
+              return <CompleteItem key={item.scheduleId} schedule={item}></CompleteItem>
+            })
+          ) : (
+            <S.EmptyListWrapper>
+              <S.EmptyImage src="/puzzle.jpg" />
+              <S.EmptyText>완료된 내역이 없습니다.</S.EmptyText>
+            </S.EmptyListWrapper>
+          )}
+        </S.CompleteListWrapper>
       ) : (
         <>
           <S.BottomWrapper>

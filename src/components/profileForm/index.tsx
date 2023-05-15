@@ -1,20 +1,13 @@
+import React from 'react'
+import { UseMutateFunction, useQuery } from 'react-query'
+import { User } from '../../apis/interface/Auth'
+import { AxiosError } from 'axios'
 import { useMutation } from 'react-query'
 import * as S from './style'
 import { useForm } from 'react-hook-form'
 
-// 프로필 페이지
-/**
- * TODO:
- * 1. 프로필 페이지 레이아웃 구성
- * 2. 내정보 조회 API 연동 / useQuery /get
- * 3. 정보수정 API 연동 / useMutation / post
- * 4. 조회한 정보를 input에 vaule로 넣어주기
- * 5. 수정하기 버튼 클릭시 정보 수정
- *
- */
-
 function ProfileForm() {
-  // useForm 
+  // useForm
   const {
     register,
     handleSubmit,
@@ -43,25 +36,14 @@ function ProfileForm() {
     <>
       <S.ProfileContainer>
         <S.ProfileWrapper>
-          <S.ProfileLogoImage src='/public/title-logo.png' />
+          <S.ProfileLogoImage src="/public/title-logo.png" />
           <S.ProfileFormContainer>
             <S.Section>
-              <S.ProfileInput
-                id="email"
-                type="email"
-                placeholder="이메일"
-                disabled
-              />
-            <S.DoubleCheckButton>중복확인</S.DoubleCheckButton>
+              <S.ProfileInput id="email" type="email" placeholder="이메일" disabled />
+              <S.DoubleCheckButton>중복확인</S.DoubleCheckButton>
             </S.Section>
             <S.Section>
-              <S.ProfileInput
-                id="name"
-                type="text"
-                placeholder="이름"
-                className="half"
-                disabled
-              />
+              <S.ProfileInput id="name" type="text" placeholder="이름" className="half" disabled />
               <S.ProfileInput
                 id="phoneNumber"
                 type="text"
@@ -76,7 +58,7 @@ function ProfileForm() {
                 })}
               />
               {/* {errors.phoneNumber && <S.ErrorMessage role="alert">{errors.phoneNumber.message}</S.ErrorMessage>} */}
-            </S.Section>  
+            </S.Section>
             <S.Section>
               <S.ProfileInput
                 id="startWork"

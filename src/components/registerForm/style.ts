@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { theme } from '../../styles/Theme'
 export const RegisterContainer = styled.div`
   height: 100vh;
   display: flex;
@@ -13,7 +14,7 @@ export const RegisterWrapper = styled.div`
   padding: 40px;
   width: 600px;
   height: 700px;
-  background: #ffffff;
+  background: ${theme.colors.white};
   box-shadow: 0px 4px 4px 3px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
   z-index: 1;
@@ -31,33 +32,41 @@ export const RegisterFormContainer = styled.form`
   width: 100%;
   height: 100%;
 `
-
-export const RegisterInput = styled.input`
-  box-sizing: border-box;
+export const InputWrapper = styled.div``
+export const EmailRegisterInput = styled.input`
   width: 400px;
-  height: 50px;
-  font-size: 14px;
-  padding: 0 10px;
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
+  height: 60px;
+  border: 1px solid ${theme.colors.gray};
+  border-radius: 8px;
+  padding: 0 20px;
+  font-size: 16px;
+  font-weight: 500;
+  border: 2px solid ${theme.colors.gray};
+  margin-bottom: 0;
+
+  &:focus {
+    outline: none;
+    border: 2px solid ${theme.colors.red};
+  }
+`
+export const RegisterInput = styled.input`
+  width: 100%;
+  height: 60px;
+  border: 1px solid ${theme.colors.gray};
+  border-radius: 8px;
+  padding: 0 20px;
+  font-size: 16px;
+  font-weight: 500;
+  border: 2px solid ${theme.colors.gray};
+  margin-bottom: 0;
+
+  &:focus {
+    outline: none;
+    border: 2px solid ${theme.colors.red};
+  }
   &.half {
     width: 250px;
   }
-`
-
-export const RegisterButton = styled.button`
-  width: 300px;
-  height: 50px;
-  margin-top: 70px;
-  color: #ffffff;
-  background: #aa2727;
-  border-radius: 4px;
-`
-
-export const ErrorMessage = styled.div`
-  font-size: 10px;
-  color: #aa2727;
 `
 
 export const BottomContainer = styled.div`
@@ -67,25 +76,65 @@ export const BottomContainer = styled.div`
   border-top-left-radius: 1000px;
   width: 100vw;
   height: 400px;
-  background-color: #aa2727;
+  background-color: ${theme.colors.red};
   z-index: 0;
 `
-
 export const DoubleCheckButton = styled.div`
-  height: 50px;
-  width: 100px;
-  background-color: #aa2727;
-  border-radius: 4px;
+  width: 100%;
+  height: 60px;
+  border: none;
+  border-radius: 8px;
+  background: ${theme.colors.red};
+  color: ${theme.colors.white};
+  font-size: 16px;
+  font-weight: 700;
   margin-left: 20px;
-  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    background: ${theme.colors.redDelete};
+  }
+`
+export const EmailSection = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 `
 
 export const Section = styled.div`
   display: flex;
   width: 100%;
-  margin-bottom: 20px;
   justify-content: space-between;
+  &:first-child {
+    margin-left: 20px;
+`
+
+export const Alert = styled.div`
+  width: 250px;
+  height: 20px;
+  color: ${theme.colors.red};
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0 20px;
+  margin-top: 5px;
+  text-align: left;
+`
+export const RegisterButton = styled.button`
+  width: 100%;
+  height: 60px;
+  border: none;
+  border-radius: 8px;
+  background: ${theme.colors.red};
+  color: ${theme.colors.white};
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 26px;
+
+  &:hover {
+    background: ${theme.colors.redDelete};
+  }
 `

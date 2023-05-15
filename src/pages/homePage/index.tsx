@@ -1,7 +1,3 @@
-// 전체 / 팀 / 개인 필터링 기능 (+당직, 연차, 반차 필터링 기능)
-// 필터링 옆에 V 아이콘 추가하기
-// DAYOFF(연차), HALFOFF(반차), SHIFT(당직)
-
 import './styles.css'
 import * as S from './style'
 import type { EventObject, ExternalEventTypes, Options } from '@toast-ui/calendar'
@@ -11,27 +7,32 @@ import Calendar from '@toast-ui/react-calendar'
 import { AiFillInfoCircle } from 'react-icons/ai'
 import { useQuery } from 'react-query'
 import { getMainSchedule } from '../../apis/services/Schedule'
-import { HomeProps } from '../../interface/main'
+import { CalendarProps } from '../../interface/main'
 import DropDown from '../../components/common/dropdown'
-import { useParams } from 'react-router-dom'
+import ExcelDownload from './ExcelDownload'
 
 export default function HomePage() {
   // home api
-  const [returnData, setReturnData] = useState<HomeProps[]>([])
+  const [returnData, setReturnData] = useState<CalendarProps[]>([])
   const { data, isLoading, error } = useQuery(['user'], () =>
     getMainSchedule().then((a) => {
-      return a[0].data.scheduleList
+      return a.data.scheduleList
     }),
   )
-  // filter
-  const [filterData, setFilterData] = useState<HomeProps[]>([])
+  // calendar data filter
+  const [filterData, setFilterData] = useState<CalendarProps[]>([])
   // info
   const [isInfo, setIsInfo] = useState(false)
+  // dropdown
+  const [selectItem, setSelectItem] = useState('전체')
+  const [selectItem2, setSelectItem2] = useState('전체팀')
+
+  // calendar library
   // ref
   const calendarRef = useRef<typeof Calendar>(null)
   // month
   const [selectedDateRangeText, setSelectedDateRangeText] = useState('')
-  // 캘린더 테마
+  // theme
   const [option, setOption] = useState([
     {
       id: '0',
@@ -57,14 +58,50 @@ export default function HomePage() {
     },
   ])
   const initialCalendars: Options['calendars'] = option
-  // 캘린더 데이터
+  // data
   const initialEvents: Partial<EventObject>[] = returnData
+  // yaer, month
+  const getCalInstance = useCallback(() => calendarRef.current?.getInstance?.(), [])
+  const updateRenderRangeText = useCallback(() => {
+    const calInstance = getCalInstance()
+    if (!calInstance) {
+      setSelectedDateRangeText('')
+    }
 
-  // dropdown
-  const [selectItem, setSelectItem] = useState('전체')
-  const [selectItem2, setSelectItem2] = useState('전체팀')
+    const viewName = calInstance.getViewName()
+    const calDate = calInstance.getDate()
+
+    let year = calDate.getFullYear()
+    let month = calDate.getMonth() + 1
+    let date = calDate.getDate()
+    let dateRangeText: string
+
+    switch (viewName) {
+      case 'month': {
+        dateRangeText = `${year}년 ${month}월`
+        break
+      }
+      default:
+        dateRangeText = `${year}-${month}-${date}`
+    }
+
+    setSelectedDateRangeText(dateRangeText)
+  }, [getCalInstance])
+  useEffect(() => {
+    updateRenderRangeText()
+  }, [updateRenderRangeText])
+  // month move navibar
+  const onClickNavi = (ev: MouseEvent<HTMLButtonElement>) => {
+    if ((ev.target as HTMLButtonElement).tagName === 'BUTTON') {
+      const button = ev.target as HTMLButtonElement
+      const actionName = (button.getAttribute('data-action') ?? 'month').replace('move-', '')
+      getCalInstance()[actionName]()
+      updateRenderRangeText()
+    }
+  }
 
   // 받아온 데이터를 library 형식에 맞게 변환
+  // 나의 팀과 내정보
   useEffect(() => {
     if (!isLoading) {
       setReturnData([])
@@ -99,10 +136,9 @@ export default function HomePage() {
       }
     }
   }, [data, selectItem])
-
+  // 연차, 반차, 당직
   useEffect(() => {
     if (!isLoading) {
-      console.log(data)
       setReturnData([])
       setFilterData([])
       setSelectItem('전체')
@@ -166,49 +202,6 @@ export default function HomePage() {
     })
   }, [filterData])
 
-  // 년월
-  const getCalInstance = useCallback(() => calendarRef.current?.getInstance?.(), [])
-
-  const updateRenderRangeText = useCallback(() => {
-    const calInstance = getCalInstance()
-    if (!calInstance) {
-      setSelectedDateRangeText('')
-    }
-
-    const viewName = calInstance.getViewName()
-    const calDate = calInstance.getDate()
-
-    let year = calDate.getFullYear()
-    let month = calDate.getMonth() + 1
-    let date = calDate.getDate()
-    let dateRangeText: string
-
-    switch (viewName) {
-      case 'month': {
-        dateRangeText = `${year}년 ${month}월`
-        break
-      }
-      default:
-        dateRangeText = `${year}-${month}-${date}`
-    }
-
-    setSelectedDateRangeText(dateRangeText)
-  }, [getCalInstance])
-
-  useEffect(() => {
-    updateRenderRangeText()
-  }, [updateRenderRangeText])
-
-  // 월 이동 네브바
-  const onClickNavi = (ev: MouseEvent<HTMLButtonElement>) => {
-    if ((ev.target as HTMLButtonElement).tagName === 'BUTTON') {
-      const button = ev.target as HTMLButtonElement
-      const actionName = (button.getAttribute('data-action') ?? 'month').replace('move-', '')
-      getCalInstance()[actionName]()
-      updateRenderRangeText()
-    }
-  }
-
   return (
     <S.HomeWrapper>
       <S.TopBar>
@@ -239,8 +232,6 @@ export default function HomePage() {
         ) : (
           <></>
         )}
-      </S.TopBar>
-      <S.ContorlBar>
         <DropDown
           list={['전체', '당직', '연차', '반차']}
           width="50px"
@@ -255,6 +246,7 @@ export default function HomePage() {
           selectedItem={selectItem2}
           setSelectedItem={setSelectItem2}
         />
+        <ExcelDownload data={returnData} />
         <span>
           <button
             type="button"
@@ -281,7 +273,7 @@ export default function HomePage() {
             &#62;
           </button>
         </span>
-      </S.ContorlBar>
+      </S.TopBar>
       <S.calendarWrapper>
         <Calendar
           height="600px"

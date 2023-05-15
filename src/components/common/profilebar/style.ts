@@ -16,15 +16,31 @@ export const TeamTitle = styled.div`
   font-size: 26px;
   font-weight: 700;
 `
-export const ImageWrapper = styled.div`
+export const ImageWrapper = styled.div``
+
+export const UploadButton = styled.label``
+export const ProfileImageWrapper = styled.div`
+  width: 100px;
+  height: 100px;
   width: 100px;
   height: 100px;
   min-height: 100px;
   min-width: 100px;
   border-radius: 50%;
-  background-color: #fff;
   margin-top: 20px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
 `
+export const ProfileImage = styled.img`
+  width: 100%;
+`
+export const ProfileInput = styled.input`
+  display: none;
+`
+
 export const NameWrapper = styled.div`
   display: flex;
   align-items: center;
