@@ -10,7 +10,6 @@ export const AddTeamItem = styled.div`
   display: flex;
   div {
     width: 154px;
-    overflow-x: scroll;
     color: gray;
     font-size: 20px;
     font-weight: 700;

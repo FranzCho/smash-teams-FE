@@ -62,6 +62,7 @@ function AdminPage() {
       setAdminQueryData({ teamName: `${list}`, keyword: '', page: 0 })
     }
   }
+  const [isTeam, setIsTeam] = useState('전체보기')
 
   useEffect(() => {
     refetch()
@@ -79,39 +80,14 @@ function AdminPage() {
       >
         <S.TeamBar>
           {teamList.map((list, key) => {
-            if (params.id === list) {
-              return (
-                <S.TopBarList
-                  key={key}
-                  to={`${list}`}
-                  color="#000"
-                  click={'true'}
-                  onClick={() => handleLinkClick(list)}
-                >
-                  {list}
-                </S.TopBarList>
-              )
-            }
-            if (!params.id && list === '전체보기') {
-              return (
-                <S.TopBarList
-                  key={key}
-                  to={'전체보기'}
-                  color="#000"
-                  click={'true'}
-                  onClick={() => handleLinkClick(list)}
-                >
-                  {list}
-                </S.TopBarList>
-              )
-            }
             return (
               <S.TopBarList
                 key={key}
-                to={`${list}`}
-                color="#A1A1A1"
-                click={'false'}
-                onClick={() => handleLinkClick(list)}
+                click={isTeam === list ? 'true' : 'false'}
+                onClick={() => {
+                  handleLinkClick(list)
+                  setIsTeam(list)
+                }}
               >
                 {list}
               </S.TopBarList>

@@ -1,0 +1,87 @@
+/* toastui */
+.home {
+  /* toastui */
+  .toastui-calendar-detail-container {
+    min-width: 200px !important;
+    max-width: 240px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .toastui-calendar-popup-container {
+    min-width: 200px !important;
+    max-width: 240px;
+  }
+
+  /* 오늘 날짜 decorator */
+  .toastui-calendar-grid-cell-date .toastui-calendar-weekday-grid-date.toastui-calendar-weekday-grid-date-decorator {
+    background-color: #aa2727 !important;
+  }
+
+  /* 비활성화 */
+  .toastui-calendar-accumulated,
+  .toastui-calendar-grid-selection {
+    background-color: transparent !important;
+    border: 1px solid #e5e5e5 !important;
+    border-right: none !important;
+    border-bottom: none !important;
+  }
+
+  span.toastui-calendar-icon.toastui-calendar-ic-state-b,
+  span.toastui-calendar-template-popupDetailState {
+    display: none;
+  }
+
+  /* 연차, 반차, 당직  */
+  .toastui-calendar-weekday-event {
+    /* border-left: none !important; */
+    overflow: hidden;
+  }
+
+  .toastui-calendar-template-time img,
+  .toastui-calendar-weekday-event img {
+    transform: translateY(2px);
+  }
+
+  span.toastui-calendar-weekday-event-dot {
+    display: none;
+    position: absolute;
+    width: 200px;
+    border-radius: 0% !important;
+    height: 2px;
+    transform: translateY(12px);
+  }
+
+  .toastui-calendar-template-time {
+    /* border: 2px solid #fff;
+  width: 103%;
+  height: 100%;
+  background-color: #fff;
+  transform: translateX(-4px); */
+  }
+
+  .toastui-calendar-template-milestone {
+    margin-top: 2px;
+    line-height: 19px;
+    width: 100%;
+    padding-left: 2px;
+    padding-top: 0.5px;
+    margin-left: -3px;
+    background-color: #fff;
+    border-radius: 4px;
+  }
+
+  .toastui-calendar-template-milestone img {
+    margin-left: 1px;
+  }
+
+  .toastui-calendar-weekday-event {
+    transform: translateY(1px);
+    border-radius: 5px !important;
+  }
+
+  .toastui-calendar-detail-container .toastui-calendar-content {
+    height: auto !important;
+  }
+}

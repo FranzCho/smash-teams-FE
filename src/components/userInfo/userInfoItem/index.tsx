@@ -32,7 +32,9 @@ function UserInfoItem({ user, team, refetch }: UserInfoItemProps) {
   }, [user])
   return (
     <S.UserInfoItem>
-      <S.UserProfile>{user.profileImage === null ? <></> : <img src={user.profileImage} />}</S.UserProfile>
+      <S.UserProfile>
+        {user.profileImage === null ? <img src="/noprofile2.png" /> : <img src={user.profileImage} />}
+      </S.UserProfile>
       <S.UserDetail className="detail-1">
         <h1>{user.email}</h1>
         <h3>{user.name}</h3>

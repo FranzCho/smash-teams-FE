@@ -4,12 +4,16 @@ import 'tui-time-picker/dist/tui-time-picker.min.css'
 
 import './style.css'
 import Calendar from '@toast-ui/react-calendar'
-import { theme } from './theme'
+import { calendarTheme } from './theme'
 
 import type { EventObject, ExternalEventTypes, Options } from '@toast-ui/calendar'
 import { TZDate } from '@toast-ui/calendar'
 import type { Dispatch, MouseEvent, SetStateAction } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useQuery } from 'react-query'
+import { LoginResponseData } from '../../apis/interface/Auth'
+import { AxiosError } from 'axios'
+import { getUser } from '../../apis/services/Auth'
 
 type ViewType = 'month'
 
@@ -18,28 +22,34 @@ interface miniCalendarProps {
   setStartDate: Dispatch<SetStateAction<string>>
   setEndDate: Dispatch<SetStateAction<string>>
   setReason: Dispatch<SetStateAction<string>>
-  // setShiftInputAll: Dispatch<SetStateAction<string>>
 }
 const today = new TZDate()
 
 function MiniCalendar({ view, setStartDate, setEndDate, setReason }: miniCalendarProps) {
   const calendarRef = useRef<typeof Calendar>(null)
-  const [selectedDateRangeText, setSelectedDateRangeText] = useState<string>('')
   const [selectedView, setSelectedView] = useState(view)
+  const [selectedDateRangeText, setSelectedDateRangeText] = useState<string>('')
   const initialCalendars: Options['calendars'] = [
     {
       id: '0',
       name: '연차',
-      backgroundColor: '#9e5fff',
-      borderColor: '#9e5fff',
-      dragBackgroundColor: '#9e5fff',
+      backgroundColor: '#D34747',
+      borderColor: '#D34747',
+      dragBackgroundColor: '#D34747',
     },
     {
       id: '1',
       name: '반차',
-      backgroundColor: '#00a9ff',
-      borderColor: '#00a9ff',
-      dragBackgroundColor: '#00a9ff',
+      backgroundColor: '#476FD3',
+      borderColor: '#476FD3',
+      dragBackgroundColor: '#476FD3',
+    },
+    {
+      id: '2',
+      name: '당직',
+      backgroundColor: '#A1A1A1',
+      borderColor: '#A1A1A1',
+      dragBackgroundColor: '#A1A1A1',
     },
   ]
   const initialEvents: Partial<EventObject>[] = []
@@ -85,31 +95,18 @@ function MiniCalendar({ view, setStartDate, setEndDate, setReason }: miniCalenda
   }, [selectedView, updateRenderRangeText])
 
   const onAfterRenderEvent: ExternalEventTypes['afterRenderEvent'] = (res) => {
-    console.group('onAfterRenderEvent')
-    console.log('Event Info : ', res.title)
-
     setStartDate(res.start.d)
     setEndDate(res.end.d)
     setReason(res.title)
-
-    console.groupEnd()
   }
 
   const onBeforeDeleteEvent: ExternalEventTypes['beforeDeleteEvent'] = (res) => {
-    console.group('onBeforeDeleteEvent', res)
-    console.log('Event Info : ', res.title)
-    console.groupEnd()
-
     const { id, calendarId } = res
 
     getCalInstance().deleteEvent(id, calendarId)
   }
 
-  const onClickDayName: ExternalEventTypes['clickDayName'] = (res) => {
-    console.group('onClickDayName')
-    console.log('Date : ', res.date)
-    console.groupEnd()
-  }
+  const onClickDayName: ExternalEventTypes['clickDayName'] = (res) => {}
 
   const onClickNavi = (ev: MouseEvent<HTMLButtonElement>) => {
     if ((ev.target as HTMLButtonElement).tagName === 'BUTTON') {
@@ -120,18 +117,9 @@ function MiniCalendar({ view, setStartDate, setEndDate, setReason }: miniCalenda
     }
   }
 
-  const onClickEvent: ExternalEventTypes['clickEvent'] = (res) => {
-    console.group('onClickEvent')
-    console.log('MouseEvent : ', res.nativeEvent)
-    console.log('Event Info : ', res.event)
-    console.groupEnd()
-  }
+  const onClickEvent: ExternalEventTypes['clickEvent'] = (res) => {}
 
   const onClickTimezonesCollapseBtn: ExternalEventTypes['clickTimezonesCollapseBtn'] = (timezoneCollapsed) => {
-    console.group('onClickTimezonesCollapseBtn')
-    console.log('Is Timezone Collapsed?: ', timezoneCollapsed)
-    console.groupEnd()
-
     const newTheme = {
       'week.daygridLeft.width': '100px',
       'week.timegridLeft.width': '100px',
@@ -141,10 +129,6 @@ function MiniCalendar({ view, setStartDate, setEndDate, setReason }: miniCalenda
   }
 
   const onBeforeUpdateEvent: ExternalEventTypes['beforeUpdateEvent'] = (updateData) => {
-    console.group('onBeforeUpdateEvent')
-    console.log(updateData)
-    console.groupEnd()
-
     const targetEvent = updateData.event
     const changes = { ...updateData.changes }
 
@@ -165,6 +149,9 @@ function MiniCalendar({ view, setStartDate, setEndDate, setReason }: miniCalenda
 
     getCalInstance().createEvents([event])
   }
+
+  const { data: myUser, isLoading: user } = useQuery<LoginResponseData, AxiosError>('myUser', getUser)
+  const [imageSrc, setImageSrc] = useState<string>('/noprofile.png')
 
   return (
     <div className="miniCalendarContainer">
@@ -187,7 +174,7 @@ function MiniCalendar({ view, setStartDate, setEndDate, setReason }: miniCalenda
         calendars={initialCalendars}
         month={{ startDayOfWeek: 1, dayNames: ['일', '월', '화', '수', '목', '금', '토'] }}
         events={initialEvents}
-        theme={theme}
+        theme={calendarTheme}
         timezone={{
           zones: [
             {
@@ -197,10 +184,35 @@ function MiniCalendar({ view, setStartDate, setEndDate, setReason }: miniCalenda
             },
           ],
         }}
+        template={{
+          // 반차
+          time(event) {
+            const { start, end, title, state } = event
+            return `<span style="color: black;"><img src=${
+              imageSrc ? myUser?.data?.profileImage : imageSrc
+            } width="13px"/> ${title}</span>`
+          },
+          // 연차
+          allday(event) {
+            const { start, end, title, state } = event
+            return `<span style="color: white;"><img src=${
+              imageSrc ? myUser?.data?.profileImage : imageSrc
+            } width="13px"/> ${title}</span>`
+          },
+          // 당직
+          milestone(event) {
+            const { start, end, title, state } = event
+            return `<div style="color: black;"><img src=${
+              imageSrc ? myUser?.data?.profileImage : imageSrc
+            } width="13px"/> ${title}</div>`
+          },
+        }}
         useDetailPopup={true}
         useFormPopup={true}
         view={selectedView}
         week={{
+          showTimezoneCollapseButton: true,
+          timezonesCollapsed: false,
           eventView: true,
           taskView: true,
         }}

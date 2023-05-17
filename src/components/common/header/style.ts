@@ -22,6 +22,7 @@ export const HeaderLogo = styled.div`
 export const Logo = styled.img`
   width: 160px;
   padding: 10px;
+  cursor: pointer;
 `
 export const LogoutButton = styled.button`
   width: 100px;

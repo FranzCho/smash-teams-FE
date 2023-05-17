@@ -3,7 +3,6 @@ import UserInfoItem from '../userInfoItem'
 import * as S from './style'
 
 function UserInfoContainer({ userList, teamList, refetch }: UserInfoProps) {
-  console.log(userList, teamList)
   const filterTeam = teamList.filter((team) => {
     if (team === '전체보기') {
       return false

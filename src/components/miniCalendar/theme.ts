@@ -1,6 +1,6 @@
 import type { Options } from '@toast-ui/calendar'
 
-export const theme: Options['theme'] = {
+export const calendarTheme: Options['theme'] = {
   common: {
     border: '1px solid #ddd',
     backgroundColor: 'white',

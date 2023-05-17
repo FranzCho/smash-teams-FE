@@ -31,26 +31,31 @@ export const TopBar = styled.div`
   h2 {
     font-weight: 700;
     font-size: 28px;
-    width: 134px;
-    margin: 14px 0 0 14px;
+    width: 175px;
+    margin: 0 0 0 14px;
   }
   .info {
     width: 20px;
     height: 20px;
-    margin: 0 10px 0 0;
-    transform: translateY(13px);
+    margin: 0 10px 0 -15px;
+    transform: translateY(10px);
+    z-index: 14;
   }
   .excelDownloadButton {
     font-weight: 700;
     font-size: 13px;
     background-color: #17842f;
-    margin: 10px 0 0 560px;
+    margin: 10px 0 0 520px;
     border-radius: 8px;
     width: 70px;
     height: 30px;
+    line-height: 18px;
     color: ${({ theme }) => theme.colors.white};
     svg {
       transform: translateY(2px);
+    }
+    &:hover {
+      background-color: #0e5f1e;
     }
   }
   /* month, today btn */
@@ -105,9 +110,9 @@ export const TopBar = styled.div`
 export const Info = styled.div`
   animation: ${fadeIn} 0.5s ease-out;
   position: relative;
-  top: 60px;
-  left: -18px;
-  z-index: 9;
+  top: -5px;
+  left: 0px;
+  z-index: 14;
   background-color: ${({ theme }) => theme.colors.white};
   width: 100px;
   height: 80px;

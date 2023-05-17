@@ -4,8 +4,8 @@ import { useQuery, useQueryClient } from 'react-query'
 import * as S from './style'
 
 import { getUserSchedule } from '../../apis/services/Schedule'
-import HalfOffShiftForm from '../../components/halfOffShiftForm'
-import { MyScheduleData } from '../../interface/schedule'
+import HalfOffShiftForm from '../../components/HalfOffShiftForm'
+import { MyScheduleData, ScheduleData } from '../../interface/schedule'
 import { AxiosError } from 'axios'
 import { LoginResponseData } from '../../apis/interface/Auth'
 import { getUser } from '../../apis/services/Auth'
@@ -19,13 +19,11 @@ function HistoryPage() {
     data: mySchedule,
     isLoading,
     error,
-  } = useQuery<MyScheduleData[], AxiosError>('mySchedule', () => getUserSchedule(userId), {
+  } = useQuery<MyScheduleData, AxiosError>('mySchedule', () => getUserSchedule(userId), {
     enabled: !!userId, // userId가 존재할 때만 쿼리 실행
   })
 
   const scheduleData = mySchedule?.data?.scheduleList
-  console.log('첫 부분', scheduleData)
-
   // return <S.HistoryContainer> {scheduleData && <HalfOffShiftForm scheduleData={scheduleData} />}</S.HistoryContainer>
   return (
     <S.HistoryContainer>

@@ -43,5 +43,24 @@ export const AddTeamWrapper = styled.div`
   width: 300px;
   margin: 0 auto;
   height: 320px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  width: 300px;
+  margin: 0px auto;
+  height: 320px;
+  overflow-x: hidden;
   overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 20px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 20px;
+  }
 `

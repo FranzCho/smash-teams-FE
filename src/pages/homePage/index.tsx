@@ -1,7 +1,7 @@
-import './styles.css'
+import './styles.scss'
 import * as S from './style'
-import type { EventObject, ExternalEventTypes, Options } from '@toast-ui/calendar'
-import type { ChangeEvent, MouseEvent } from 'react'
+import type { EventObject, Options } from '@toast-ui/calendar'
+import type { MouseEvent } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Calendar from '@toast-ui/react-calendar'
 import { AiFillInfoCircle } from 'react-icons/ai'
@@ -9,58 +9,54 @@ import { useQuery } from 'react-query'
 import { getMainSchedule } from '../../apis/services/Schedule'
 import { CalendarProps } from '../../interface/main'
 import DropDown from '../../components/common/dropdown'
-import ExcelDownload from './ExcelDownload'
+import ExcelDownload from '../../utils/ExcelDownload'
+import { CalendarTheme, CalendarData } from '../../interface/schedule'
+import calendarTheme from '../../utils/calendarTheme'
+import { getUser } from '../../apis/services/Auth'
+import { LoginResponseData } from '../../apis/interface/Auth'
+import { AxiosError } from 'axios'
 
 export default function HomePage() {
   // home api
   const [returnData, setReturnData] = useState<CalendarProps[]>([])
-  const { data, isLoading, error } = useQuery(['user'], () =>
-    getMainSchedule().then((a) => {
-      return a.data.scheduleList
-    }),
-  )
-  // calendar data filter
   const [filterData, setFilterData] = useState<CalendarProps[]>([])
+  const { data, isLoading, error } = useQuery<CalendarData[], AxiosError>(
+    ['user'],
+    () =>
+      getMainSchedule().then((a) => {
+        return a.data.scheduleList
+      }),
+    { cacheTime: 50000, staleTime: 10000 * 20 },
+  )
   // info
   const [isInfo, setIsInfo] = useState(false)
   // dropdown
   const [selectItem, setSelectItem] = useState('전체')
   const [selectItem2, setSelectItem2] = useState('전체팀')
 
+  const [teamList, setTeamList] = useState<string[]>(['common', '개발팀', '디자인팀', 'admin'])
   // calendar library
   // ref
   const calendarRef = useRef<typeof Calendar>(null)
   // month
   const [selectedDateRangeText, setSelectedDateRangeText] = useState('')
   // theme
-  const [option, setOption] = useState([
-    {
-      id: '0',
-      name: '디자인팀',
-      backgroundColor: '#664f88',
-      borderColor: '#664f88',
-      dragBackgroundColor: '#664f88',
-    },
-    {
-      id: '1',
-      name: '개발팀',
-      backgroundColor: '#3b7794',
-      borderColor: '#3b7794',
-      dragBackgroundColor: '#3b7794',
-    },
-    {
-      id: '2',
-      name: '디자인팀',
-      backgroundColor: '#abca45',
-      borderColor: '#abca45',
-      dragBackgroundColor: '#abca45',
-      color: '#000',
-    },
+  const [option, setOption] = useState<CalendarTheme[]>([
+    calendarTheme(0, teamList[0]),
+    calendarTheme(1, teamList[0]),
+    calendarTheme(2, teamList[1]),
+    calendarTheme(3, teamList[1]),
+    calendarTheme(4, teamList[2]),
+    calendarTheme(5, teamList[2]),
+    calendarTheme(6, teamList[3]),
+    calendarTheme(7, teamList[3]),
   ])
+
   const initialCalendars: Options['calendars'] = option
   // data
-  const initialEvents: Partial<EventObject>[] = returnData
+  const initialEvents: Partial<EventObject>[] = filterData
   // yaer, month
+  //@ts-ignore
   const getCalInstance = useCallback(() => calendarRef.current?.getInstance?.(), [])
   const updateRenderRangeText = useCallback(() => {
     const calInstance = getCalInstance()
@@ -101,109 +97,104 @@ export default function HomePage() {
   }
 
   // 받아온 데이터를 library 형식에 맞게 변환
-  // 나의 팀과 내정보
   useEffect(() => {
     if (!isLoading) {
-      setReturnData([])
-      setFilterData([])
-      setSelectItem2('전체팀')
-      if (selectItem === '전체') {
-        data.filter((list) => {
-          setFilterData((filterData) => filterData.concat(list))
-          return true
-        })
-      } else if (selectItem === '당직') {
-        data.filter((list) => {
-          if (list.user.teamName === '개발팀') {
-            setFilterData((filterData) => filterData.concat(list))
+      setReturnData(() => [])
+      data?.map((list, arr, data) => {
+        const type = (type: string) => {
+          switch (type) {
+            case 'DAYOFF':
+              return {
+                calendarId: (2 * teamList.indexOf(list.user.teamName)).toString(),
+                isAllday: true,
+                category: 'allday',
+                isReadOnly: true,
+              }
+            case 'HALFOFF':
+              return {
+                calendarId: (2 * teamList.indexOf(list.user.teamName)).toString(),
+                isAllday: false,
+                category: 'milestone',
+                isReadOnly: true,
+              }
+            case 'SHIFT':
+              return {
+                calendarId: (2 * teamList.indexOf(list.user.teamName) + 1).toString(),
+                isAllday: false,
+                category: 'time',
+                isReadOnly: true,
+              }
+            default:
+              return { calendarId: '', isAllday: false, category: '', isReadOnly: true }
           }
-          return true
-        })
-      } else if (selectItem === '연차') {
-        data.filter((list) => {
-          if (list.user.userId === 0) {
-            setFilterData((filterData) => filterData.concat(list))
-          }
-          return true
-        })
-      } else {
-        data.filter((list) => {
-          if (list.type === 'HALFOFF') {
-            setFilterData((filterData) => filterData.concat(list))
-          }
-          return true
-        })
-      }
-    }
-  }, [data, selectItem])
-  // 연차, 반차, 당직
-  useEffect(() => {
-    if (!isLoading) {
-      setReturnData([])
-      setFilterData([])
-      setSelectItem('전체')
-      if (selectItem2 === '전체팀') {
-        data.filter((list) => {
-          setFilterData((filterData) => filterData.concat(list))
-          return true
-        })
-      } else if (selectItem2 === '나의팀') {
-        data.filter((list) => {
-          if (list.type === 'SHIFT') {
-            setFilterData((filterData) => filterData.concat(list))
-          }
-          return true
-        })
-      } else {
-        data.filter((list) => {
-          if (list.type === 'HALFOFF') {
-            setFilterData((filterData) => filterData.concat(list))
-          }
-          return true
-        })
-      }
-    }
-  }, [data, selectItem2])
-
-  useEffect(() => {
-    filterData.filter((list) => {
-      const type = (type: string) => {
-        switch (type) {
-          case 'DAYOFF':
-            return { calendarId: '2', isAllday: true, category: 'allday', isReadOnly: true }
-          case 'HALFOFF':
-            return { calendarId: '1', isAllday: false, category: 'milestone', isReadOnly: true }
-          case 'SHIFT':
-            return { calendarId: '0', isAllday: false, category: 'time', isReadOnly: true }
-          default:
-            return { calendarId: '', isAllday: false, category: '', isReadOnly: true }
         }
+
+        const { calendarId, isAllday, category, isReadOnly } = type(list.type)
+
+        setReturnData((returnData) => [
+          ...returnData,
+          {
+            calendarId: calendarId,
+            isAllday: isAllday,
+            category: category,
+            isReadOnly: isReadOnly,
+            id: list.user.userId,
+            title: list.user.name,
+            body: list.reason,
+            start: new Date(list.startDate.split('T')[0]),
+            end: new Date(list.endDate.split('T')[0]),
+            attendees: [`${list.user.email}`],
+            state: list.user.profileImage === null ? '/noprofile2.png' : list.user.profileImage,
+          },
+        ])
+        return list
+      })
+    }
+  }, [data])
+
+  //filter데이터에 복사 및 teamlist 색상 설정
+  useEffect(() => {
+    setFilterData(returnData)
+  }, [returnData])
+
+  // 유저 데이터 가져오기
+  const { data: myUser } = useQuery<LoginResponseData, AxiosError>('myUser', getUser)
+
+  // returnData를 필터링한 후 이를 setFilterData에 갈아끼기
+  // 당직, 반차, 연차에 따른 필터링
+  useEffect(() => {
+    const filter = returnData.filter((list) => {
+      setSelectItem2('전체팀')
+      if (selectItem === '당직') {
+        return list.category === 'time'
+      } else if (selectItem === '연차') {
+        return list.category === 'allday'
+      } else if (selectItem === '반차') {
+        return list.category === 'milestone'
+      } else {
+        return true
       }
-
-      const { calendarId, isAllday, category, isReadOnly } = type(list.type)
-
-      setReturnData((returnData) => [
-        ...returnData,
-        {
-          calendarId: calendarId,
-          isAllday: isAllday,
-          category: category,
-          isReadOnly: isReadOnly,
-          id: list.user.userId,
-          title: list.user.name,
-          body: list.reason,
-          start: list.startDate.split('T')[0],
-          end: list.endDate.split('T')[0],
-          attendees: [`${list.user.email}`],
-          state: list.user.profileImage,
-        },
-      ])
-      return true
     })
-  }, [filterData])
+    setFilterData(() => filter)
+  }, [selectItem])
+
+  // 나의팀, 내정보 필터링
+  useEffect(() => {
+    const filter = returnData.filter((list) => {
+      setSelectItem('전체')
+      if (selectItem2 === '나의팀') {
+        return teamList[Number(list.calendarId)] === myUser?.data?.teamName
+      } else if (selectItem2 === '내정보') {
+        return Number(list.id) === myUser?.data?.id
+      } else {
+        return true
+      }
+    })
+    setFilterData(() => filter)
+  }, [selectItem2])
 
   return (
-    <S.HomeWrapper>
+    <S.HomeWrapper className="home">
       <S.TopBar>
         <h2 className="render-range">{selectedDateRangeText}</h2>
         <button
@@ -213,25 +204,25 @@ export default function HomePage() {
           }}
         >
           <AiFillInfoCircle size={'20px'} color="#383838" />
+          {isInfo ? (
+            <S.Info>
+              <div className="info-dayoff">
+                <img src="/noprofile.png" width={'10px'} />
+                연차
+              </div>
+              <div className="info-halfoff">
+                <img src="/noprofile.png" width={'10px'} />
+                반차
+              </div>
+              <div className="info-shift">
+                <img src="/noprofile.png" width={'10px'} />
+                당직
+              </div>
+            </S.Info>
+          ) : (
+            <></>
+          )}
         </button>
-        {isInfo ? (
-          <S.Info>
-            <div className="info-dayoff">
-              <img src="/public/noprofile.png" width={'10px'} />
-              연차
-            </div>
-            <div className="info-halfoff">
-              <img src="/public/noprofile.png" width={'10px'} />
-              반차
-            </div>
-            <div className="info-shift">
-              <img src="/public/noprofile.png" width={'10px'} />
-              당직
-            </div>
-          </S.Info>
-        ) : (
-          <></>
-        )}
         <DropDown
           list={['전체', '당직', '연차', '반차']}
           width="50px"
@@ -240,7 +231,7 @@ export default function HomePage() {
           setSelectedItem={setSelectItem}
         />
         <DropDown
-          list={['전체', '나의팀', '내정보']}
+          list={['전체팀', '나의팀', '내정보']}
           width="60px"
           fontSize="14px"
           selectedItem={selectItem2}

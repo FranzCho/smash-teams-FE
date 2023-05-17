@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useQueryClient } from 'react-query'
 import { Outlet, useNavigate } from 'react-router-dom'
-import { getCookie } from '../utils/cookies'
+import { getCookie, removeCookie } from '../utils/cookies'
 
 function ProtectedRouter() {
   const queryClient = useQueryClient()

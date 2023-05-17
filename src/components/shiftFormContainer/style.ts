@@ -57,6 +57,7 @@ export const DateInput = styled.input`
   border: none;
   font-weight: 600;
   font-size: 16px;
+  text-align: right;
 `
 export const TimeInput = styled.input`
   margin-right: 25px;
@@ -64,10 +65,13 @@ export const TimeInput = styled.input`
   border: none;
   font-weight: 600;
   font-size: 16px;
+  text-align: right;
 `
 export const Input = styled.input`
   margin-right: 20px;
   border: none;
+  text-align: center;
+  text-overflow: ellipsis;
 `
 
 export const ButtonsWrapper = styled.div`
@@ -76,24 +80,24 @@ export const ButtonsWrapper = styled.div`
   margin: 82px 0 0 0;
   width: 100%;
 `
-export const DayOffButton = styled.button`
+export const DayOffButton = styled.button<{ isClicked: boolean }>`
   margin-right: 12px;
   padding: 16px 68px;
   width: 100%;
 
-  background-color: ${({ theme }) => theme.colors.white};
-  color: ${({ theme }) => theme.colors.mainColor};
+  background-color: ${({ theme, isClicked }) => (isClicked ? theme.colors.white : theme.colors.mainColor)};
+  color: ${({ theme, isClicked }) => (isClicked ? theme.colors.mainColor : theme.colors.white)};
   font-weight: 600;
   font-size: 16px;
   border-radius: 6px;
 `
-export const HalfOffButton = styled.button`
+export const HalfOffButton = styled.button<{ isClicked: boolean }>`
   margin-left: 12px;
   padding: 16px 68px;
   width: 100%;
 
-  background-color: ${({ theme }) => theme.colors.mainColor};
-  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme, isClicked }) => (isClicked ? theme.colors.white : theme.colors.mainColor)};
+  color: ${({ theme, isClicked }) => (isClicked ? theme.colors.mainColor : theme.colors.white)};
   font-weight: 600;
   font-size: 16px;
   border-radius: 6px;

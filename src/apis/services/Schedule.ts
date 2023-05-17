@@ -1,15 +1,14 @@
-import { orderScheduleProps } from '../../components/historyCard'
+import { orderScheduleProps } from '../../components/HistoryCard'
 import { ScheduleEnroll, ScheduleEnrollResponse } from '../../interface/schedule'
 import { axiosInstance } from '../axios'
 
-export const createUserSchedule = async (schedule: ScheduleEnroll, id: number) => {
-  const { type, startDate, endDate, reason } = schedule.schedule
-  const { data } = await axiosInstance().post(`/auth/user/${schedule.id}/schedule`, {
-    type,
-    startDate,
-    endDate,
-    reason,
-  })
+export interface ScheduleEnrollRequest {
+  id: number | undefined
+  schedule: ScheduleEnroll
+}
+
+export const createUserSchedule = async ({ id, schedule }: ScheduleEnrollRequest) => {
+  const { data } = await axiosInstance().post(`/auth/user/${id}/schedule`, schedule)
   return data
 }
 
@@ -18,7 +17,7 @@ export const getMainSchedule = async () => {
   return data
 }
 
-export const getUserSchedule = async (id: number) => {
+export const getUserSchedule = async (id: number | undefined) => {
   const { data } = await axiosInstance().get(`/auth/user/${id}/schedule`)
   return data
 }
@@ -29,8 +28,10 @@ export const getSuperSchedule = async () => {
 }
 
 export const orderSchedule = async (schedule: orderScheduleProps) => {
-  const { data } = await axiosInstance().post('/auth/super/schedule/order', {
-    schedule,
+  const { scheduleId, status } = schedule
+  const { data } = await axiosInstance().post('/auth/super/schedule', {
+    scheduleId,
+    status,
   })
   return data
 }

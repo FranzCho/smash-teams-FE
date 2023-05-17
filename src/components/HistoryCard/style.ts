@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import { theme } from '../../styles/Theme'
 import { ButtonStatusProps, ToggleButtonProps } from '../../interface/schedule'
+import { theme } from '../../styles/Theme'
 
 export const CardWrapper = styled.div<ButtonStatusProps>`
   min-width: 340px;
@@ -12,7 +12,6 @@ export const CardWrapper = styled.div<ButtonStatusProps>`
   border-color: ${(props) => {
     switch (props.isStatus) {
       case 'REJECTED':
-        return theme.colors.redReject
       case 'LAST':
         return theme.colors.greenBe
       case 'APPROVED':

@@ -2,12 +2,12 @@ import styled from 'styled-components'
 import { theme } from '../../styles/Theme'
 
 export const ProfileContainer = styled.div`
-  height: 100vh;
   display: flex;
   align-items: center;
   position: relative;
   z-index: 999;
 `
+
 export const ProfileWrapper = styled.div`
   position: relative;
   height: calc(100vh - 400px);
@@ -33,28 +33,23 @@ export const ProfileFormContainer = styled.form`
   width: 100%;
   height: 100%;
 `
+export const InputWrapper = styled.div``
+export const PassWordInputWrapper = styled.div`
+  display: flex;
+`
 
 export const ProfileInput = styled.input`
-  box-sizing: border-box;
-  width: 400px;
-  height: 50px;
-  font-size: 14px;
-  padding: 0 10px;
-  background:${theme.colors.white};
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
+  width: 380px;
+  height: 60px;
+  border: 1px solid ${theme.colors.gray};
+  border-radius: 8px;
+  padding: 0 20px;
+  font-size: 16px;
+  font-weight: 500;
+  border: 2px solid ${theme.colors.gray};
   &.half {
     width: 250px;
   }
-`
-
-export const ModifyButton = styled.button`
-  width: 520px;
-  height: 50px;
-  margin-top: 70px;
-  color: ${theme.colors.white};
-  background: ${theme.colors.red};
-  border-radius: 4px;
 `
 
 export const ErrorMessage = styled.div`
@@ -74,12 +69,15 @@ export const BottomContainer = styled.div`
 `
 
 export const DoubleCheckButton = styled.div`
-  height: 50px;
-  width: 100px;
-  background-color: ${theme.colors.gray};
-  border-radius: 4px;
-  margin-left: 20px;
+  width: 200px;
+  height: 60px;
+  border: none;
+  border-radius: 8px;
+  background: ${theme.colors.gray};
   color: ${theme.colors.white};
+  font-size: 16px;
+  font-weight: 700;
+  margin-left: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -88,15 +86,34 @@ export const DoubleCheckButton = styled.div`
 export const Section = styled.div`
   display: flex;
   width: 100%;
-  margin-bottom: 20px;
   justify-content: space-between;
+  & {
+    margin-top: 24px;
+  }
 `
 
-export const ExitButton = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  left: 0;
-  padding-top: 10px;
-  font-size: 12px;
+export const Alert = styled.div`
+  width: 250px;
+  height: 20px;
   color: ${theme.colors.red};
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0 20px;
+  margin-top: 4px;
+  text-align: left;
+`
+export const ModifyButton = styled.button`
+  width: 100%;
+  height: 60px;
+  border: none;
+  border-radius: 8px;
+  background: ${theme.colors.red};
+  color: ${theme.colors.white};
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 24px;
+  &:hover {
+    background: ${theme.colors.redDelete};
+  }
 `

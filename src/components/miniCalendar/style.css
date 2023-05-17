@@ -33,6 +33,7 @@
   color: #fff;
   padding: 8px 12px;
 }
+
 .arrowButton {
   background-color: #aa2727;
   border-color: #aa2727;
@@ -40,17 +41,19 @@
   color: #fff;
   padding: 8px 12px;
 }
+
 .prevButton {
   border-radius: 6px 0 0 6px;
 }
+
 .nextButton {
   border-radius: 0 6px 6px 0;
 }
 
+.prevButton,
+.nextButton,
 .todayButton:hover {
-  color: #e15e5e;
-  border: solid 1px #e15e5e;
-  background-color: #fff;
+  background-color: #772222;
 }
 
 .todayButton:active {
@@ -97,4 +100,9 @@
   border-color: #e15e5e !important;
   border-radius: 40px !important;
   color: #fff !important;
+}
+
+.toastui-calendar-popup-button.toastui-calendar-popup-close {
+  top: 18px !important;
+  left: 36em !important;
 }

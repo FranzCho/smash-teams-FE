@@ -5,12 +5,11 @@ import { RegisterRequest } from '../../apis/interface/Auth'
 import { useForm } from 'react-hook-form'
 import { emailCheck, join } from '../../apis/services/Auth'
 import * as S from './style'
-import { EmailCheckRequest } from '../../apis/interface/Auth'
 import Swal from 'sweetalert2'
 import { theme } from '../../styles/Theme'
 import { useNavigate } from 'react-router-dom'
 
-interface JoinResponseData {
+export interface JoinResponseData {
   status: number
   msg: string
   data: boolean
@@ -27,7 +26,7 @@ function RegisterForm() {
     register,
     handleSubmit,
     getValues,
-    formState: { isDirty, errors },
+    formState: { isDirty, errors, isValid },
   } = useForm<RegisterRequest>()
 
   const navigate = useNavigate()
@@ -60,15 +59,6 @@ function RegisterForm() {
     string
   >(emailCheck, {
     onSuccess: (data) => {
-      if (errors.email?.message) {
-        Swal.fire({
-          title: '이메일 형식에 맞지 않습니다.',
-          text: '다른 이메일을 입력해주세요.',
-          icon: 'error',
-          confirmButtonColor: `${theme.colors.red}`,
-        })
-        return
-      }
       if (!data?.data.data) {
         Swal.fire({
           title: '사용가능한 이메일입니다.',
@@ -111,13 +101,30 @@ function RegisterForm() {
   // email 중복체크
   const onSubmitEmail = () => {
     const email = getValues('email')
+    const pattern = /\S+@\S+\.\S+/ // 이메일 정규식
+    const emailValue = pattern.test(email)
+
+    if (!emailValue) {
+      Swal.fire({
+        title: '이메일 형식에 맞지 않습니다.',
+        text: '다른 이메일을 입력해주세요.',
+        icon: 'error',
+        confirmButtonColor: `${theme.colors.red}`,
+      })
+      return
+    }
     emailCheckMutation(email)
   }
+
+  const LoginButtonHandler = () => {
+    navigate('/login')
+  }
+
   return (
     <>
       <S.RegisterContainer>
         <S.RegisterWrapper>
-          <S.RegisterLogoImage src="/public/title-logo.png" />
+          <S.RegisterLogoImage src="/title-logo.png" />
           <S.RegisterFormContainer onSubmit={handleSubmit(onSubmit)}>
             <S.EmailSection>
               <S.InputWrapper>
@@ -157,7 +164,6 @@ function RegisterForm() {
                     },
                   })}
                 />
-                {errors.name ? <S.Alert role="alert">{errors.name.message}</S.Alert> : <S.Alert role="alert"></S.Alert>}
               </S.InputWrapper>
               <S.InputWrapper>
                 <S.RegisterInput
@@ -260,7 +266,10 @@ function RegisterForm() {
                 )}
               </S.InputWrapper>
             </S.Section>
-            <S.RegisterButton type="submit">가입하기</S.RegisterButton>
+            <S.RegisterButton type="submit" isValid={!isValid}>
+              가입하기
+            </S.RegisterButton>
+            <S.LoginButton onClick={LoginButtonHandler}>로그인 페이지가기</S.LoginButton>
           </S.RegisterFormContainer>
         </S.RegisterWrapper>
       </S.RegisterContainer>

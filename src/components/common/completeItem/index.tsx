@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import * as S from './style'
 import { HistoryScheduleData } from '../../../interface/schedule'
 
-function CompleteItem(schedule: HistoryScheduleData) {
-  console.log(schedule.schedule.status)
+// HistoryScheduleData
+function CompleteItem(schedule: any) {
   const [scheduleStatus, setScheduleStatus] = useState(
     schedule.schedule.status as 'FIRST' | 'REJECTED' | 'APPROVED' | 'LAST',
   )
@@ -65,10 +65,11 @@ function CompleteItem(schedule: HistoryScheduleData) {
     default:
       break
   }
+  const profileImage = schedule.schedule.user.profileImage ? schedule.schedule.user.profileImage : '/noprofile.png'
 
   return (
     <S.CompleteItemWrapper isStatus={scheduleStatus}>
-      <S.ProfileImg src={schedule.schedule.user.profileImage}></S.ProfileImg>
+      <S.ProfileImg src={profileImage}></S.ProfileImg>
       <S.UserInfoWrapper>
         <S.UserName>성명</S.UserName>
         <S.UserEmail>{schedule.schedule.user.name}</S.UserEmail>

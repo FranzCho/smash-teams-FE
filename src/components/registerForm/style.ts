@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { theme } from '../../styles/Theme'
+import { LoginInputProps } from '../../interface/component'
 export const RegisterContainer = styled.div`
   height: 100vh;
   display: flex;
@@ -34,7 +35,7 @@ export const RegisterFormContainer = styled.form`
 `
 export const InputWrapper = styled.div``
 export const EmailRegisterInput = styled.input`
-  width: 400px;
+  width: 380px;
   height: 60px;
   border: 1px solid ${theme.colors.gray};
   border-radius: 8px;
@@ -104,14 +105,6 @@ export const EmailSection = styled.div`
   justify-content: space-between;
 `
 
-export const Section = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  &:first-child {
-    margin-left: 20px;
-`
-
 export const Alert = styled.div`
   width: 250px;
   height: 20px;
@@ -122,7 +115,24 @@ export const Alert = styled.div`
   margin-top: 5px;
   text-align: left;
 `
-export const RegisterButton = styled.button`
+export const RegisterButton = styled.button<LoginInputProps>`
+  width: 100%;
+  height: 60px;
+  border: none;
+  border-radius: 8px;
+  background: ${({ isValid }) => (isValid ? theme.colors.redDisable : theme.colors.red)};
+
+  color: ${theme.colors.white};
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 26px;
+
+  &:hover {
+    background: ${({ isValid }) => (isValid ? theme.colors.redDisable : theme.colors.redDelete)};
+  }
+`
+export const LoginButton = styled.button`
   width: 100%;
   height: 60px;
   border: none;
@@ -132,9 +142,16 @@ export const RegisterButton = styled.button`
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
-  margin-top: 26px;
-
+  margin-top: 12px;
   &:hover {
     background: ${theme.colors.redDelete};
+  }
+`
+export const Section = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  &:first-child {
+    margin-left: 20px;
   }
 `

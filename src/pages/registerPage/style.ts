@@ -13,7 +13,7 @@ export const BackGround = styled.div`
   width: 100vw;
   min-width: 1440px;
   height: 50vh;
-  background-color: #aa2727;
+  background-color: ${theme.colors.red};
   border-top-left-radius: 50vh;
   position: absolute;
   bottom: 0;
@@ -27,6 +27,13 @@ export const RegisterImage = styled.img`
   top: -368px;
   right: 30px;
 `
+export const RegisterCharacter = styled.img`
+  width: 100px;
+  position: absolute;
+  top: -82px;
+  right: 460px;
+`
+
 export const RegisterSourseWrapper = styled.div`
   width: 1440px;
   height: 50vh;

@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom'
 import LoginPage from '../pages/loginPage'
 import RegisterPage from '../pages/registerPage'
 import AdminPage from '../pages/adminPage'
@@ -9,6 +9,7 @@ import ProfilePage from '../pages/profilePage'
 import HistoryPage from '../pages/historyPage'
 import SideBar from '../components/common/sidebar'
 import ProtectedRouter from './ProtectedRouter'
+import NotFound from '../pages/notfound'
 
 function Router() {
   return (
@@ -27,6 +28,7 @@ function Router() {
             <Route path="/admin" element={<AdminPage />}>
               <Route path=":id" element={<AdminPage />} />
             </Route>
+            <Route path={'*'} element={<NotFound />}></Route>
           </Route>
         </Route>
       </Routes>

@@ -2,10 +2,12 @@ import React from 'react'
 import ExcelJS from 'exceljs'
 import { saveAs } from 'file-saver'
 import { AiOutlineDownload } from 'react-icons/ai'
+import { CalendarProps } from '../interface/main'
+import { ExcelDownloadProps } from '../interface/schedule'
 
-const download = async (data) => {
+const download = async (data: CalendarProps[]) => {
   const workbook = new ExcelJS.Workbook()
-  const worksheet = workbook.addWorksheet('시트 이름')
+  const worksheet = workbook.addWorksheet('calendarInfoDownload')
 
   const columns = Object.keys(data[0])
   worksheet.columns = columns.map((column) => ({
@@ -18,7 +20,7 @@ const download = async (data) => {
   saveAs(new Blob([buffer]), '파일명.xlsx')
 }
 
-const ExcelDownload = ({ data }) => {
+const ExcelDownload = ({ data }: ExcelDownloadProps) => {
   return (
     <button className="excelDownloadButton" onClick={() => download(data)}>
       Excel <AiOutlineDownload size={'14px'} />

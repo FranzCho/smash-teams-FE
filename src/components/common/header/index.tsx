@@ -1,9 +1,7 @@
-import React from 'react'
-import { HeaderLogo, HeaderWrapper, InnerWrapper, Logo, LogoutButton } from './style'
-import styled from 'styled-components'
+import * as S from './style'
 import { logout } from '../../../apis/services/Auth'
 import { useMutation, useQueryClient } from 'react-query'
-import { getCookie, removeCookie } from '../../../utils/cookies'
+import { removeCookie } from '../../../utils/cookies'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { theme } from '../../../styles/Theme'
@@ -43,16 +41,18 @@ function Header() {
       }
     })
   }
-
+  const LogoClickHandler = () => {
+    navigate('/')
+  }
   return (
-    <HeaderWrapper>
-      <InnerWrapper>
-        <HeaderLogo>
-          <Logo src="/public/title-logo.png" alt="logo" />
-        </HeaderLogo>
-        <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
-      </InnerWrapper>
-    </HeaderWrapper>
+    <S.HeaderWrapper>
+      <S.InnerWrapper>
+        <S.HeaderLogo>
+          <S.Logo onClick={LogoClickHandler} src="/title-logo.png" alt="logo" />
+        </S.HeaderLogo>
+        <S.LogoutButton onClick={handleLogout}>로그아웃</S.LogoutButton>
+      </S.InnerWrapper>
+    </S.HeaderWrapper>
   )
 }
 

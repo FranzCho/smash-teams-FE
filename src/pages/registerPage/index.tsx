@@ -16,6 +16,7 @@ function RegisterPage() {
             </S.Body>
           </S.RegisterTextWrapper>
           <S.RegisterImage src="/register.jpg" />
+          <S.RegisterCharacter src="/monster.gif" />
         </S.RegisterSourseWrapper>
       </S.RegisterPageWrapper>
       <S.BackGround></S.BackGround>

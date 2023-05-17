@@ -1,13 +1,13 @@
 import { memo, useRef } from 'react'
 import * as S from './style'
 import SwiperCore, { Pagination, Swiper } from 'swiper'
-import { MyScheduleData } from '../../../interface/schedule'
-import HistoryCard from '../../historyCard'
+import { MyScheduleData, ScheduleData } from '../../../interface/schedule'
+import HistoryCard from '../../HistoryCard'
 import { SwiperSlide } from 'swiper/react'
 
 type SwiperType = Swiper | null
 
-function SwiperList({ seletedData }: { seletedData: MyScheduleData[] | undefined }) {
+function SwiperList({ seletedData }: { seletedData: ScheduleData[] | undefined }) {
   // 스와이퍼
   SwiperCore.use([Pagination])
   const swiperRef = useRef<SwiperType>(null)
@@ -23,8 +23,8 @@ function SwiperList({ seletedData }: { seletedData: MyScheduleData[] | undefined
       swiperRef.current.slideNext()
     }
   }
-  console.log('내가  찾는 콘솔', seletedData)
 
+  // MyScheduleData
   return (
     <S.ListWrapper
       onSwiper={(swiper) => {
@@ -40,7 +40,7 @@ function SwiperList({ seletedData }: { seletedData: MyScheduleData[] | undefined
       slidesOffsetAfter={50}
     >
       {seletedData && seletedData.length > 0 ? (
-        seletedData?.map((schedule: MyScheduleData) => (
+        seletedData?.map((schedule: any) => (
           <SwiperSlide>
             <HistoryCard key={schedule.scheduleId} schedule={schedule}></HistoryCard>
           </SwiperSlide>

@@ -15,7 +15,7 @@ export const TeamBar = styled.div`
   display: flex;
 `
 
-export const TopBarList = styled(Link)<{ color: string; click: string }>`
+export const TopBarList = styled.button<{ click: string }>`
   width: auto;
   height: auto;
   margin-left: 13px;
@@ -23,8 +23,8 @@ export const TopBarList = styled(Link)<{ color: string; click: string }>`
   font-weight: 700;
   font-size: 18px;
   padding: 0 0 10px 0;
-  color: ${({ color }) => color};
-  border-bottom: ${({ click, color }) => (click === 'true' ? `4px solid ${color}` : '4px solid #fff')};
+  color: ${({ click }) => (click === 'true' ? `#000` : '#A1A1A1')};
+  border-bottom: ${({ click }) => (click === 'true' ? `4px solid #000` : '4px solid #fff')};
 `
 
 export const TopBarAddIcon = styled.button`

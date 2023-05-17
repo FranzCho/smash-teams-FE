@@ -1,5 +1,4 @@
 import { axiosInstance } from '../axios'
-import { Admin } from '../interface/Auth'
 
 export const getAdmin = async (teamName: string, keyword: string, page: number) => {
   const { data } = await axiosInstance().get(`/auth/admin?teamName=${teamName}&keyword=${keyword}&page=${page}`)

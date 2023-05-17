@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { theme } from '../../styles/Theme'
+import { LoginInputProps } from '../../interface/component'
 export const LoginContainer = styled.div`
   height: 100vh;
   display: flex;
@@ -61,9 +62,6 @@ export const LoginInput = styled.input`
   }
 `
 
-interface LoginInputProps {
-  isValid: boolean
-}
 export const LoginButton = styled.button<LoginInputProps>`
   width: 100%;
   height: 60px;

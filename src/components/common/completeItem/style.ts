@@ -40,7 +40,7 @@ export const ProfileImg = styled.img`
   height: 70px;
 `
 export const UserInfoWrapper = styled.div`
-  width: 120px;
+  width: 100px;
   margin-left: 20px;
 `
 export const UserName = styled(TitleName)``
@@ -66,7 +66,7 @@ export const ItemStatusTitle = styled(TitleName)``
 export const ItemStatus = styled(Info)``
 
 export const ItemUserTeamWrapper = styled.div`
-  width: 70px;
+  width: 80px;
   height: 40px;
   margin-left: 60px;
   padding: 4px 10px;
@@ -77,7 +77,7 @@ export const ItemUserTeamWrapper = styled.div`
   justify-content: center;
 `
 export const ItemUserTeamTitle = styled.div`
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
 `
 export const ItemUserPositionWrapper = styled(ItemUserTeamWrapper)`

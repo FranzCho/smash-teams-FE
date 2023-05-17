@@ -1,5 +1,5 @@
 export interface CalendarProps {
-  id: string
+  id: number | string | undefined
   calendarId: string
   title: string
   body: string
